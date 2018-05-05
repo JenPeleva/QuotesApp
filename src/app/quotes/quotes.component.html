@@ -1,0 +1,9 @@
+<ng-container *ngIf="quote">
+    <div class="section -small">{{friendlyMessage}}</div>
+    <div class="section">
+        <blockquote>
+            <i class="fa fa-quote-left" aria-hidden="true"></i>{{quote.body}}<i class="fa fa-quote-right" aria-hidden="true"></i>
+        </blockquote>
+        <div class="autor">- {{quote.author}}</div>
+    </div>
+  </ng-container>
