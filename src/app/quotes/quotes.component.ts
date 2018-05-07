@@ -1,19 +1,16 @@
-import { Component, OnChanges, Input, Output, SimpleChanges, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnChanges, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { QuotesService } from '../services/quotes.service';
-import { Subscription } from 'rxjs/Subscription';
 import { friendlyMessages } from './friendly-messages';
 
 @Component({
   selector: 'quotes',
   templateUrl: './quotes.component.html'
 })
-export class QuotesComponent implements OnChanges, OnDestroy {
+export class QuotesComponent implements OnChanges{ 
   @Input() quoteTerm: string;
   @Output() quotesLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   quote: Quote;
   friendlyMessage: string;
-
-  private getQuotesSubscription: Subscription;
 
   constructor(private quotesService: QuotesService) { }
 
@@ -21,10 +18,6 @@ export class QuotesComponent implements OnChanges, OnDestroy {
     if (changes["quoteTerm"]) {
       this.getQuotes();
     }
-  }
-
-  ngOnDestroy() {
-    this.getQuotesSubscription.unsubscribe();
   }
 
   getQuotes() {
@@ -66,7 +59,7 @@ export class QuotesComponent implements OnChanges, OnDestroy {
         this.friendlyMessage = friendlyMessages.default;
       }
 
-      this.getQuotesSubscription = this.quotesService.getQuotes(this.quoteTerm).subscribe( (data) => {
+      this.quotesService.getQuotes(this.quoteTerm).subscribe( (data) => {
 
           if (data["quotes"] && data.quotes.length > 0) {
               const chosenQuote = data.quotes[Math.floor(Math.random()*data.quotes.length)];

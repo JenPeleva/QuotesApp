@@ -1,14 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { EmotionService } from './services/emotion.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
   title = 'app';
   emotion: string;
   showTryAgainButton: boolean;
@@ -17,13 +16,7 @@ export class AppComponent implements OnDestroy {
   showUpload: boolean = true;
   showLoading: boolean;
 
-  private getEmotionSubscirption: Subscription;
-
   constructor(private emotionService: EmotionService) { }
-
-  ngOnDestroy() {
-    this.getEmotionSubscirption.unsubscribe();
-  }
 
   onQuotesLoaded() {
     this.showLoading= false;
@@ -48,7 +41,7 @@ export class AppComponent implements OnDestroy {
 
   getEmotions(photo: any) {
     this.showLoading = true;
-    this.getEmotionSubscirption = this.emotionService.getEmotions(photo).subscribe((data) => {
+    this.emotionService.getEmotions(photo).subscribe((data) => {
       if (data[0] && data[0].faceAttributes && data[0].faceAttributes.emotion) {
         const emotions = data[0].faceAttributes.emotion;
         const array = Object.keys(emotions).map(key => emotions[key]);
