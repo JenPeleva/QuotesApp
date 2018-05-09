@@ -1,10 +1,9 @@
 import { Component, Output, Input, EventEmitter} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'image-upload',
-  templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.css']
+  templateUrl: './image-upload.component.html'
 })
 export class ImageUploadComponent {
 

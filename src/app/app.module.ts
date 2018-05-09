@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 import { QuotesComponent } from './quotes/quotes.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { EmotionService } from './services/emotion.service';
-import { HttpModule } from '@angular/http';
 import { QuotesService } from './services/quotes.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { QuotesService } from './services/quotes.service';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpClientModule
   ],
   providers: [EmotionService, QuotesService],
   bootstrap: [AppComponent]

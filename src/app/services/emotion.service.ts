@@ -1,31 +1,28 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from "@angular/core";
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from "rxjs/Observable";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const CV_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceLandmarks=false&returnFaceAttributes=emotion';
 
 @Injectable()
 export class EmotionService {
 
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
     getEmotions(file): Observable<any> {
-        const headers = new Headers({
-            'Content-Type': 'application/octet-stream',
-            'Ocp-Apim-Subscription-Key': '262f6d57ecd04189a5e3b00f299e86c9'
-        });
-        const options = new RequestOptions({
-            headers: headers
-        });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/octet-stream',
+                'Ocp-Apim-Subscription-Key': '262f6d57ecd04189a5e3b00f299e86c9'
+            })
+        }
         //const data = `{"url: "${file}"}`;
         const data = this.makeblob(file);
         return this.http
-        .post(CV_URL, data, options)
-        .map((response: Response) => response.json())
-        .catch((error: any) => Observable.throw(error.json));
+        .post(CV_URL, data, httpOptions)
+        .pipe(catchError((error: any) => observableThrowError(error.json)));
     }
 
     makeblob(dataURL) {

@@ -1,11 +1,13 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from "@angular/core";
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from "rxjs/Observable";
+import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class QuotesService {
 
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
     getQuotes(keyword: string): Observable<any> {
         let requestUrl;
@@ -22,18 +24,15 @@ export class QuotesService {
             requestUrl = `https://favqs.com/api/quotes/?filter=${keyword}&type=tag`;
 
         }
+        const httpOptions = {
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Authorization" : 'Token token="e2cd0fe8241af684e00a5daa54ac041c"'
+            })
+        }
 
-        const headers = new Headers({
-            "Content-Type": "application/json",
-            "Authorization" : 'Token token="e2cd0fe8241af684e00a5daa54ac041c"'
-        });
-
-        const options = new RequestOptions({
-            headers: headers
-        });
         return this.http
-        .get(requestUrl, options)
-        .map((response: Response) => response.json())
-        .catch((error: any) => Observable.throw(error.json));
+        .get(requestUrl, httpOptions)
+        .pipe(catchError((error: any) => observableThrowError(error.json)));
     }
 }
