@@ -7,6 +7,8 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { EmotionService } from './services/emotion.service';
 import { QuotesService } from './services/quotes.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [EmotionService, QuotesService],
   bootstrap: [AppComponent]
